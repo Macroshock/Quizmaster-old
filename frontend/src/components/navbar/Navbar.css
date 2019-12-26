@@ -1,0 +1,27 @@
+.navbar {
+  position: sticky;
+  top: 0;
+  background-color: #1d508d;
+  height: 8vh;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  font-size: calc(10px + 2vmin);
+}
+
+.navbar-item {
+  height: 8vh;
+  width: 7rem;
+  background-color: #1d508d;
+  transition: background-color 0.22s;
+  text-align: center;
+  line-height: 3.5rem;
+  text-decoration: none;
+  color: white;
+}
+
+.navbar-item:hover {
+  background-color: #288ad6;
+  cursor: pointer;
+}
