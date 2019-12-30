@@ -1,6 +1,9 @@
 .navbar {
   position: sticky;
   top: 0;
+  padding: 5px;
+  padding-left: 5vw;
+  padding-right: 5vw;
   background-color: #1d508d;
   height: 8vh;
   display: flex;
@@ -19,6 +22,7 @@
   line-height: 3.5rem;
   text-decoration: none;
   color: rgb(230, 230, 230);
+  border-radius: 12px;
 }
 
 .navbar-item.active {

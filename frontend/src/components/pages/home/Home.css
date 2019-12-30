@@ -1,15 +1,5 @@
-.header-section {
-  overflow: hidden;
-  border-top: 2px solid black;
-  
-  width: 100%;
-  height: 300px;
-}
-
 .image-container {
   background-color: black;
-  float: right;
-  overflow: hidden;
   height: 92vh;
   width: 100%;
 }
@@ -17,7 +7,137 @@
 .main-image {
   background-image: url('../../../resources/images/main-image.jpg');
   background-size: cover;
-  
   height: 100%;
   width: 100%;
+}
+
+.header-container {
+  height: 100%;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-text-title {
+  padding: 25px;
+  color: white;
+  font-size: 5rem;
+}
+
+.header-text-subtitle {
+  padding: 15px;
+  color: rgb(215, 215, 215);
+  font-size: 3rem;
+}
+
+.header-button-getstarted {
+  border: none;
+  padding: 1.5rem 2.5rem 1.5rem 2.5rem;
+  margin: 25px;
+  font-size: 1.7rem;
+  border-radius: 9px;
+  background-color: #1d508d;
+  transition: background-color 0.22s;
+  color: white;
+  font-weight: bold;
+}
+
+.header-button-getstarted:hover {
+  cursor: pointer;
+  background-color: #297CBB;
+}
+
+.main-section {
+  position: relative;
+  margin: auto;
+  width: 100%;
+  height: 70vh;
+  padding: 100px 0px;
+}
+
+.main-section-header {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.main-section-title {
+  padding: 20px 0px 5px 0px;
+  color: black;
+  font-size: 5rem;
+}
+
+.main-section-subtitle {
+  padding: 5px;
+  color: rgb(127, 127, 127);
+  font-size: 3rem;
+}
+
+.main-section-body {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.main-section-card {
+  width: 30%;
+  height: 30vh;
+  margin: 30px 10px;
+  padding: 10px 0px;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+  text-align: center;
+}
+
+.main-section-card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+.secondary-section {
+  padding: 75px 0px;
+  width: 100%;
+  height: 65vh;
+  background-color: #1d508d;
+}
+
+.secondary-section-header {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.secondary-section-title {
+  padding: 20px 0px 5px 0px;
+  color: white;
+  font-size: 5rem;
+}
+
+.secondary-section-subtitle {
+  padding: 5px;
+  color: rgb(215, 215, 215);
+  font-size: 3rem;
+}
+
+.secondary-section-body {
+  color: white;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.footer {
+  width: 100%;
+  height: 20vh;
+  background-color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.footer-text {
+  width: 25%;
+  text-align: center;
+  color: white;
 }
