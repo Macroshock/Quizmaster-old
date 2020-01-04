@@ -1,6 +1,6 @@
 import React from 'react'
 import './Home.css'
-import mainImage from '../../../resources/images/main-image.jpg'
+import Card from '../../global/Card.js'
 
 function Home() {
   return (
@@ -17,19 +17,13 @@ function Home() {
       
       <div className="main-section">
         <div className="main-section-header">
-          <span className="main-section-title"> Title </span>
-          <span className="main-section-subtitle"> Subtitle </span>
+          <span className="main-section-title"> How does it work? </span>
+          <span className="main-section-subtitle"> Here's how to deliver quizzes in 3 easy steps </span>
         </div>
         <div className="main-section-body">
-          <div className="main-section-card">
-            text
-          </div>
-          <div className="main-section-card">
-            text
-          </div>
-          <div className="main-section-card">
-            text
-          </div>
+          <Card text="text1" icon="fas fa-clipboard-list"/>
+          <Card text="text2" icon="fas fa-tasks"/>
+          <Card text="text3" icon="fas fa-chart-bar"/>
         </div>
       </div>
 

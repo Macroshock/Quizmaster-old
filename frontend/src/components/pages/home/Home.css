@@ -29,7 +29,7 @@
 .header-text-subtitle {
   padding: 15px;
   color: rgb(215, 215, 215);
-  font-size: 3rem;
+  font-size: 2rem;
 }
 
 .header-button-getstarted {
@@ -72,28 +72,15 @@
 .main-section-subtitle {
   padding: 5px;
   color: rgb(127, 127, 127);
-  font-size: 3rem;
+  font-size: 2rem;
 }
 
 .main-section-body {
   width: 100%;
+  padding: 50px 0px 0px 0px;
   display: flex;
   flex-direction: row;
   justify-content: center;
-}
-
-.main-section-card {
-  width: 30%;
-  height: 30vh;
-  margin: 30px 10px;
-  padding: 10px 0px;
-  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-  transition: 0.3s;
-  text-align: center;
-}
-
-.main-section-card:hover {
-  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
 }
 
 .secondary-section {
@@ -118,7 +105,7 @@
 .secondary-section-subtitle {
   padding: 5px;
   color: rgb(215, 215, 215);
-  font-size: 3rem;
+  font-size: 2rem;
 }
 
 .secondary-section-body {
