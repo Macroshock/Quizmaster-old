@@ -10,7 +10,9 @@ function Card(props) {
           <i className={props.icon}></i>
         </div>
       }
-      <p> {props.text} </p>
+      <div className="card-text">
+        <p> {props.text} </p>
+      </div>
     </div>
   )
 }

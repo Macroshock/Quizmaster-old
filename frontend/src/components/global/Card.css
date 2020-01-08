@@ -10,12 +10,13 @@
 
 .card-icon {
   font-size: 5rem;
-  padding: 1rem 0px 0px 0px;
+  padding: 2rem 0px 0px 0px;
   color: #1d508d;
 }
 
-.card p {
-  padding: 2rem 0px 0px 0px;
+.card-text {
+  padding: 2rem;
+  font-size: 1.5rem;
 }
 
 .card:hover {

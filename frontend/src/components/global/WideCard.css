@@ -1,0 +1,71 @@
+.widecard-container {
+  display: flex;
+}
+
+.widecard-container.left {
+  justify-content: flex-start;
+}
+
+.widecard-container.right {
+  justify-content: flex-end;
+}
+
+.widecard {
+  width: 70%;
+  height: 30vh;
+  margin: 5vh 5vw;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+  background-color: white;
+}
+
+.widecard:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+.widecard.left {
+  text-align: left;
+}
+
+.widecard.right {
+  text-align: right;
+}
+
+.widecard-grid {
+  height: 100%;
+  width: 100%;
+  display: grid;
+}
+
+.widecard-grid.left {
+  grid-template-columns: 40% 60%;
+  grid-template-rows: 30% 70%;
+  grid-template-areas:
+    "image title"
+    "image text"
+}
+
+.widecard-grid.right {
+  grid-template-columns: 60% 40%;
+  grid-template-rows: 70% 30%;
+  grid-template-areas:
+    "title image"
+    "text image"
+}
+
+.widecard-image {
+  grid-area: image;
+  background-size: cover;
+}
+
+.widecard-title {
+  grid-area: title;
+  margin: 0.5rem;
+  font-size: 2.5rem;
+}
+
+.widecard-text {
+  grid-area: text;
+  margin: 1rem 0.5rem;
+  font-size: 1.2rem;
+}
