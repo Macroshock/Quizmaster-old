@@ -1,21 +1,34 @@
 .navbar {
+  width: 100%;
+  max-width: 100%;
+  height: 10vh;
   position: sticky;
   top: 0;
-  padding: 5px;
-  padding-left: 5vw;
-  padding-right: 5vw;
+  overflow: hidden;
   background-color: #1d508d;
-  height: 8vh;
+  font-size: calc(10px + 2vmin);
+  color: white;
+  z-index: 9999;
+}
+
+.navbar-flex-container {
+  width: 90%;
+  margin: 0.2rem 2rem 0.2rem 5rem;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: flex-end;
-  font-size: calc(10px + 2vmin);
+}
+
+.navbar-logo {
+  margin-right: auto;
+  font-size: 2rem;
 }
 
 .navbar-item {
   height: 8vh;
   width: 7rem;
+  margin: 0.5vh 0.5vw;
   background-color: #1d508d;
   transition: background-color 0.22s;
   text-align: center;
@@ -27,7 +40,6 @@
 
 .navbar-item.active {
   text-decoration: underline;
-  color: white;
 }
 
 .navbar-item:hover {

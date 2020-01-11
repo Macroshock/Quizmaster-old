@@ -35,18 +35,23 @@ class Navbar extends React.Component {
   render() {
     return (
       <div className="navbar">
-        <Link className={this.state.currentItem === "homeItem" ? "navbar-item active" : "navbar-item"} 
-          to="/" id="homeItem" >
-            Home
-        </Link>
+        <div className='navbar-flex-container'>
+          <div className="navbar-logo">
+            QuizMaster
+          </div>
+          <Link className={this.state.currentItem === "homeItem" ? "navbar-item active" : "navbar-item"} 
+            to="/" id="homeItem" >
+              Home
+          </Link>
 
-        <Link className={this.state.currentItem === "aboutItem" ? "navbar-item active" : "navbar-item"}
-           to="/about" id="aboutItem">
-             About
-        </Link>
+          <Link className={this.state.currentItem === "aboutItem" ? "navbar-item active" : "navbar-item"}
+            to="/about" id="aboutItem">
+              About
+          </Link>
 
-        <div className="navbar-item">
-          Log In
+          <div className="navbar-item">
+            Log In
+          </div>
         </div>
       </div>
     )
