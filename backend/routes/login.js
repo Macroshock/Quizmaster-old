@@ -1,14 +1,12 @@
 const express = require('express')
 const router = express.Router()
-const MongoClient = require('mongodb').MongoClient;
-const assert = require('assert');
-const jwt = require('jsonwebtoken');
+const MongoClient = require('mongodb').MongoClient
+const assert = require('assert')
+const jwt = require('jsonwebtoken')
+const constants = require('../constants/constants.js')
 
 // Constants
-const DB_COLNAME = 'Users'
-const DB_URL = 'mongodb://localhost:27017'
-const DB_NAME = 'quizmaster'
-const SECRET_KEY = 'thesecretkey'
+const COLLECTION = 'Users'
 
 // Login
 router.post('/', (req, res) => {
@@ -18,13 +16,13 @@ router.post('/', (req, res) => {
     password: req.body.password
   }
 
-  const client = new MongoClient(DB_URL);
+  const client = new MongoClient(constants.DB_URL)
   client.connect(function(err) {
-    assert.equal(null, err);
-    console.log('Authenticating user');
+    assert.equal(null, err)
+    console.log('Authenticating user')
   
-    const db = client.db(DB_NAME);
-    const collection = db.collection(DB_COLNAME);
+    const db = client.db(constants.DB_NAME)
+    const collection = db.collection(COLLECTION)
 
     // Find user by email
     collection.find({ email: credentials.email }).toArray(function(err, docs) {
@@ -45,7 +43,7 @@ router.post('/', (req, res) => {
 
       // Create and send token
       const payload = { userId: user._id, email: user.email, role: user.role }
-      const token = jwt.sign(payload, SECRET_KEY)
+      const token = jwt.sign(payload, constants.SECRET_KEY)
       res.json({ token })
       console.log('Token granted')
     })

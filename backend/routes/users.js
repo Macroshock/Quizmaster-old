@@ -1,14 +1,12 @@
 const express = require('express')
 const router = express.Router()
-const MongoClient = require('mongodb').MongoClient;
-const assert = require('assert');
-const jwt = require('jsonwebtoken');
+const MongoClient = require('mongodb').MongoClient
+const assert = require('assert')
+const jwt = require('jsonwebtoken')
+const constants = require('../constants/constants.js')
 
 // Constants
-const DB_COLNAME = 'Users'
-const DB_URL = 'mongodb://localhost:27017'
-const DB_NAME = 'quizmaster'
-const SECRET_KEY = 'thesecretkey'
+const COLLECTION = 'Users'
 
 // Validate token middleware
 function validateToken(req, res, next) {
@@ -27,7 +25,7 @@ function validateToken(req, res, next) {
   }
 
   // verify token
-  jwt.verify(token, SECRET_KEY, (err, user) => {
+  jwt.verify(token, constants.SECRET_KEY, (err, user) => {
     // if there is an error, then the token is not valid
     if (err) {
       return res.sendStatus(403)
@@ -47,13 +45,13 @@ router.post('/', (req, res) => {
     password: req.body.password
   }
 
-  const client = new MongoClient(DB_URL);
+  const client = new MongoClient(constants.DB_URL)
   client.connect(function(err) {
-    assert.equal(null, err);
-    console.log('Creating user');
+    assert.equal(null, err)
+    console.log('Creating user')
   
-    const db = client.db(DB_NAME);
-    const collection = db.collection(DB_COLNAME);
+    const db = client.db(constants.DB_NAME)
+    const collection = db.collection(COLLECTION)
 
     // Insert user in database
     collection.insertOne(user, function(err, result) {
@@ -80,13 +78,13 @@ router.get('/', (req, res) => {
     return res.sendStatus(403)
   }*/
 
-  const client = new MongoClient(DB_URL);
+  const client = new MongoClient(constants.DB_URL)
   client.connect(function(err) {
-    assert.equal(null, err);
+    assert.equal(null, err)
     console.log("Getting all users")
   
-    const db = client.db(DB_NAME);
-    const collection = db.collection(DB_COLNAME);
+    const db = client.db(constants.DB_NAME)
+    const collection = db.collection(COLLECTION)
 
     // Find users in database
     collection.find({}).toArray(function(err, docs) {
