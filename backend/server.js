@@ -23,7 +23,11 @@ client.connect(function(err) {
 // Set up Express
 app.use(express.json())
 
-const usersRouter = require('./routes/users/users.js')
+// Set up the routers
+const usersRouter = require('./routes/users.js')
 app.use('/users', usersRouter)
+
+const loginRouter = require('./routes/login.js')
+app.use('/login', loginRouter)
 
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`))

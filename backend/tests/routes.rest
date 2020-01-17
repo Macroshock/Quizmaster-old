@@ -1,12 +1,47 @@
+# Retrieve users
 GET http://localhost:8000/users/
-
+#Authorization: Bearer header.signature
 ###
 
+# Create user
 POST http://localhost:8000/users/
 Content-Type: application/json
 
 {
-  "name": "Julio2",
-  "email": "julio2@gmail.com",
-  "password": "2342"
+  "name": "Julio3",
+  "email": "julio3@gmail.com",
+  "password": "2343"
+}
+
+###
+
+# Login non existent user
+POST http://localhost:8000/login/
+Content-Type: application/json
+
+{
+  "email": "doesnt_exists@gmail.com",
+  "password": "12345"
+}
+
+###
+
+# Login existing user but with wrong password
+POST http://localhost:8000/login/
+Content-Type: application/json
+
+{
+  "email": "julio3@gmail.com",
+  "password": "wrongpassword"
+}
+
+###
+
+# Successful login to admin account
+POST http://localhost:8000/login/
+Content-Type: application/json
+
+{
+  "email": "julio@gmail.com",
+  "password": "234"
 }
