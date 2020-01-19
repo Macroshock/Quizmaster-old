@@ -31,9 +31,20 @@ Content-Type: application/json
 
 ###
 
+# Successful login to user account
+POST http://localhost:8000/login/
+Content-Type: application/json
+
+{
+  "email": "julio3@gmail.com",
+  "password": "2343"
+}
+
+###
+
 # Retrieve users
 GET http://localhost:8000/users/
-#Authorization: Bearer header.signature
+#Authorization: Bearer header.payload.signature
 
 ###
 
@@ -56,7 +67,7 @@ Content-Type: application/json
 ###
 
 # Update user
-PATCH http://localhost:8000/users/5e23bf5de4796327c41d5aae
+PATCH http://localhost:8000/users/5e24bc34b1cf7521c4e3afc6
 Content-Type: application/json
 
 {
@@ -66,4 +77,4 @@ Content-Type: application/json
 ###
 
 # Delete user
-DELETE http://localhost:8000/users/5e23bf5de4796327c41d5aae
+DELETE http://localhost:8000/users/5e24bc34b1cf7521c4e3afc6

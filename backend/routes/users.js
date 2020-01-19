@@ -1,67 +1,12 @@
 const express = require('express')
 const router = express.Router()
 const MongoDb = require('mongodb')
-const jwt = require('jsonwebtoken')
 const constants = require('../utils/constants.js')
 const dbhandler = require('../utils/dbhandler.js')
-
-// Constants
-const COLLECTION = 'Users'
-
-// Validate token middleware
-function validateToken(req, res, next) {
-  const header = req.headers['authorization']
-
-  // check if the authorization header is missing
-  if (!header) {
-    return res.sendStatus(401)
-  }
-
-  const token = header.split(' ')[1]
-
-  // check if there is a token
-  if (!token) {
-    return res.sendStatus(401)
-  }
-
-  // verify token
-  jwt.verify(token, constants.SECRET_KEY, (err, user) => {
-    // if there is an error, then the token is not valid
-    if (err) {
-      return res.sendStatus(403)
-    }
-
-    req.user = user
-    next()
-  })
-}
-
-// Middleware to verify that certain user exists
-function checkUser(req, res, next) {
-  
-  const collection = dbhandler.getCollection(COLLECTION)
-
-  if (!collection) {
-    return res.status(500).json({ message: 'Database server is not accesible' })
-  }
-
-  // Find user in database
-  collection.findOne({ _id: new MongoDb.ObjectID(req.params.id) }, function(err, result) {
-    if (err) {
-      return res.status(500).json({ message: err })
-    }
-
-    if (result == null) {
-      return res.status(404).json({ message: 'User not found' })
-    }
-
-    next()
-  })
-
-}
+const mw = require('../utils/middleware.js')
 
 // Create user
-router.post('/', (req, res) => {
+router.post('/', mw.validateToken, mw.validateAdmin, (req, res) => {
 
   let user = {
     name: req.body.name,
@@ -70,7 +15,7 @@ router.post('/', (req, res) => {
   }
 
   console.log('Creating user')
-  const collection = dbhandler.getCollection(COLLECTION)
+  const collection = dbhandler.getCollection('Users')
 
   if (!collection) {
     return res.status(500).json({ message: 'Can not create user; database server is not accesible' })
@@ -92,7 +37,7 @@ router.post('/', (req, res) => {
 router.get('/:id', (req, res) => {
 
   console.log('Getting user')
-  const collection = dbhandler.getCollection(COLLECTION)
+  const collection = dbhandler.getCollection('Users')
 
   if (!collection) {
     return res.status(500).json({ message: 'Can not get user; database server is not accesible' })
@@ -111,17 +56,10 @@ router.get('/:id', (req, res) => {
 })
 
 // Get all users
-//router.get('/', validateToken, (req, res) => {
-router.get('/', (req, res) => {
-
-  // check for admin role
-  /*if (req.user.role !== 'admin') {
-    console.log(req.user)
-    return res.sendStatus(403)
-  }*/
+router.get('/', mw.validateToken, mw.validateAdmin, (req, res) => {
 
   console.log('Getting all users')
-  const collection = dbhandler.getCollection(COLLECTION)
+  const collection = dbhandler.getCollection('Users')
 
   if (!collection) {
     return res.sendStatus(500).json({ message: 'Can not get users; database server is not accesible' })
@@ -140,7 +78,7 @@ router.get('/', (req, res) => {
 
 
 // Update user
-router.patch('/:id', checkUser, (req, res) => {
+router.patch('/:id', mw.validateToken, mw.validateAdmin, mw.checkUser, (req, res) => {
   
   let updatedUser = { $set: { } }
 
@@ -161,7 +99,7 @@ router.patch('/:id', checkUser, (req, res) => {
   } 
 
   console.log('Updating user')
-  const collection = dbhandler.getCollection(COLLECTION)
+  const collection = dbhandler.getCollection('Users')
 
   if (!collection) {
     return res.sendStatus(500).json({ message: 'Can not update user; database server is not accesible' })
@@ -180,10 +118,10 @@ router.patch('/:id', checkUser, (req, res) => {
 })
 
 // Delete user
-router.delete('/:id', checkUser, (req, res) => {
+router.delete('/:id', mw.validateToken, mw.validateAdmin, mw.checkUser, (req, res) => {
 
   console.log('Deleting user')
-  const collection = dbhandler.getCollection(COLLECTION)
+  const collection = dbhandler.getCollection('Users')
 
   if (!collection) {
     return res.sendStatus(500).json({ message: 'Can not update user; database server is not accesible' })
