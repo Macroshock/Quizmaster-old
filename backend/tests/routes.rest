@@ -49,13 +49,14 @@ Content-Type: application/json
 {
   "name": "Julio4",
   "email": "julio4@gmail.com",
-  "password": "2343"
+  "password": "2343",
+  "role": "user"
 }
 
 ###
 
 # Update user
-PATCH http://localhost:8000/users/5e1e9b1346257b25d8c6a5e2
+PATCH http://localhost:8000/users/5e23bf5de4796327c41d5aae
 Content-Type: application/json
 
 {
@@ -65,4 +66,4 @@ Content-Type: application/json
 ###
 
 # Delete user
-DELETE http://localhost:8000/users/5e227dc1e52cbe240c69ce23
+DELETE http://localhost:8000/users/5e23bf5de4796327c41d5aae

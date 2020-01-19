@@ -1,22 +1,10 @@
 const express = require('express')
 const app = express()
-const MongoClient = require('mongodb').MongoClient
-const assert = require('assert')
-const constants = require('./constants/constants.js')
-
-// Constants
+const constants = require('./utils/constants.js')
+const dbhandler = require('./utils/dbhandler.js')
 
 // Set up MongoDB database
-const client = new MongoClient(constants.DB_URL);
-
-client.connect(function(err) {
-  assert.equal(null, err)
-  console.log("Connected successfully to database server")
-
-  const db = client.db(constants.DB_NAME);
-
-  client.close()
-})
+dbhandler.init()
 
 // Set up Express
 app.use(express.json())

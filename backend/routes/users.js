@@ -1,10 +1,9 @@
 const express = require('express')
 const router = express.Router()
 const MongoDb = require('mongodb')
-const MongoClient = MongoDb.MongoClient
-const assert = require('assert')
 const jwt = require('jsonwebtoken')
-const constants = require('../constants/constants.js')
+const constants = require('../utils/constants.js')
+const dbhandler = require('../utils/dbhandler.js')
 
 // Constants
 const COLLECTION = 'Users'
@@ -40,24 +39,23 @@ function validateToken(req, res, next) {
 // Middleware to verify that certain user exists
 function checkUser(req, res, next) {
   
-  const client = new MongoClient(constants.DB_URL)
-  client.connect(function(err) {
-    assert.equal(null, err)
-  
-    const db = client.db(constants.DB_NAME)
-    const collection = db.collection(COLLECTION)
+  const collection = dbhandler.getCollection(COLLECTION)
 
-    // Find user in database
-    collection.findOne({ _id: new MongoDb.ObjectID(req.params.id) }, function(err, result) {
-      assert.equal(null, err)
+  if (!collection) {
+    return res.status(500).json({ message: 'Database server is not accesible' })
+  }
 
-      if (result == null) {
-        return res.status(404).json({ message: 'User not found' })
-      }
+  // Find user in database
+  collection.findOne({ _id: new MongoDb.ObjectID(req.params.id) }, function(err, result) {
+    if (err) {
+      return res.status(500).json({ message: err })
+    }
 
-      client.close()
-      next()
-    })
+    if (result == null) {
+      return res.status(404).json({ message: 'User not found' })
+    }
+
+    next()
   })
 
 }
@@ -71,21 +69,21 @@ router.post('/', (req, res) => {
     password: req.body.password
   }
 
-  const client = new MongoClient(constants.DB_URL)
-  client.connect(function(err) {
-    assert.equal(null, err)
-    console.log('Creating user')
-  
-    const db = client.db(constants.DB_NAME)
-    const collection = db.collection(COLLECTION)
+  console.log('Creating user')
+  const collection = dbhandler.getCollection(COLLECTION)
 
-    // Insert user in database
-    collection.insertOne(user, function(err, result) {
-      assert.equal(null, err)
-      res.status(201).json(result)
-      console.log('User created')
-      client.close()
-    })
+  if (!collection) {
+    return res.status(500).json({ message: 'Can not create user; database server is not accesible' })
+  }
+
+  // Insert user in database
+  collection.insertOne(user, function(err, result) {
+    if (err) {
+      return res.status(500).json({ message: err })
+    }
+
+    res.status(201).json(result)
+    console.log('User created')
   })
 
 })
@@ -93,21 +91,21 @@ router.post('/', (req, res) => {
 // Get user
 router.get('/:id', (req, res) => {
 
-  const client = new MongoClient(constants.DB_URL)
-  client.connect(function(err) {
-    assert.equal(null, err)
-    console.log('Getting user')
-  
-    const db = client.db(constants.DB_NAME)
-    const collection = db.collection(COLLECTION)
+  console.log('Getting user')
+  const collection = dbhandler.getCollection(COLLECTION)
 
-    // Find user in database
-    collection.findOne({ _id: new MongoDb.ObjectID(req.params.id) }, function(err, result) {
-      assert.equal(null, err)
-      res.status(200).json(result)
-      console.log(`User ${req.params.id} found`)
-      client.close()
-    })
+  if (!collection) {
+    return res.status(500).json({ message: 'Can not get user; database server is not accesible' })
+  }
+
+  // Find user in database
+  collection.findOne({ _id: new MongoDb.ObjectID(req.params.id) }, function(err, result) {
+    if (err) {
+      return res.sendStatus(500).json({ message: err })
+    }
+
+    res.status(200).json(result)
+    console.log(`User ${req.params.id} found`)
   })
   
 })
@@ -122,23 +120,22 @@ router.get('/', (req, res) => {
     return res.sendStatus(403)
   }*/
 
-  const client = new MongoClient(constants.DB_URL)
-  client.connect(function(err) {
-    assert.equal(null, err)
-    console.log('Getting all users')
-  
-    const db = client.db(constants.DB_NAME)
-    const collection = db.collection(COLLECTION)
+  console.log('Getting all users')
+  const collection = dbhandler.getCollection(COLLECTION)
 
-    // Find users in database
-    collection.find({}).toArray(function(err, docs) {
-      assert.equal(err, null)
-      res.status(200).json(docs)
-      console.log('Users fetched')
-      client.close()
-    })
+  if (!collection) {
+    return res.sendStatus(500).json({ message: 'Can not get users; database server is not accesible' })
+  }
+
+  // Find users in database
+  collection.find({}).toArray(function(err, docs) {
+    if (err) {
+      return res.sendStatus(500).json({ message: err })
+    }
+
+    res.status(200).json(docs)
+    console.log('Users fetched')
   })
-
 })
 
 
@@ -163,44 +160,43 @@ router.patch('/:id', checkUser, (req, res) => {
     updatedUser.$set.role = req.body.role
   } 
 
-  const client = new MongoClient(constants.DB_URL)
-  client.connect(function(err) {
-    assert.equal(null, err)
-    console.log('Updating user')
-  
-    const db = client.db(constants.DB_NAME)
-    const collection = db.collection(COLLECTION)
+  console.log('Updating user')
+  const collection = dbhandler.getCollection(COLLECTION)
 
-    // Delete user in database
-    collection.updateOne({ _id: new MongoDb.ObjectID(req.params.id) }, updatedUser, 
-                          function(err, result) {
-      assert.equal(null, err)
-      res.sendStatus(200)
-      console.log('User updated')
-      client.close()
-    })
+  if (!collection) {
+    return res.sendStatus(500).json({ message: 'Can not update user; database server is not accesible' })
+  }
+
+  // Delete user in database
+  collection.updateOne({ _id: new MongoDb.ObjectID(req.params.id) }, updatedUser, 
+                        function(err, result) {
+    if (err) {
+      return res.sendStatus(500).json({ message: err })
+    }
+
+    res.sendStatus(200)
+    console.log('User updated')
   })
-
 })
 
 // Delete user
 router.delete('/:id', checkUser, (req, res) => {
 
-  const client = new MongoClient(constants.DB_URL)
-  client.connect(function(err) {
-    assert.equal(null, err)
-    console.log('Deleting user')
-  
-    const db = client.db(constants.DB_NAME)
-    const collection = db.collection(COLLECTION)
+  console.log('Deleting user')
+  const collection = dbhandler.getCollection(COLLECTION)
 
-    // Delete user in database
-    collection.deleteOne({ _id: new MongoDb.ObjectID(req.params.id) }, function(err, result) {
-      assert.equal(null, err)
-      res.sendStatus(204)
-      console.log('User deleted')
-      client.close()
-    })
+  if (!collection) {
+    return res.sendStatus(500).json({ message: 'Can not update user; database server is not accesible' })
+  }
+
+  // Delete user in database
+  collection.deleteOne({ _id: new MongoDb.ObjectID(req.params.id) }, function(err, result) {
+    if (err) {
+      return res.sendStatus(500).json({ message: err })
+    }
+
+    res.sendStatus(204)
+    console.log('User deleted')
   })
 
 })
