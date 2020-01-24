@@ -8,7 +8,7 @@
   background-color: #1d508d;
   font-size: calc(10px + 2vmin);
   color: white;
-  z-index: 9999;
+  z-index: 1000;
 }
 
 .navbar-flex-container {
@@ -39,10 +39,34 @@
 }
 
 .navbar-item.active {
+  color: white;
   text-decoration: underline;
 }
 
 .navbar-item:hover {
   background-color: #288ad6;
   cursor: pointer;
+}
+
+.form-login {
+  height: 20vh;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.form-login  div {
+  width: 20rem;
+  max-width: 60%;
+}
+
+.form-login input {
+  display: block;
+  height: 1rem;
+  width: 100%;
+  margin: 0.5rem 0rem 1rem 0rem;
+}
+
+.form-login label {
+  margin: 0.5rem 0rem;
 }
