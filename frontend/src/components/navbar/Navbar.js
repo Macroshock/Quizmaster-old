@@ -43,15 +43,14 @@ class Navbar extends React.Component {
 
   loginModalConfirm = () => {
 
-    fetch('/login', {
+    fetch('http://localhost:8000/login', {
       method: 'POST',
-      mode: 'no-cors',
       headers: {
         'Content-type': 'application/json',
       },
       body: JSON.stringify({
         email: this.state.loginEmail,
-        password: this.state.loginassword
+        password: this.state.loginPassword
       })
     }).then(res => {
       console.log(res)
