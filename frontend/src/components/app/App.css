@@ -28,3 +28,21 @@ body {
   color: white;
 }
 
+.input {
+  display: block;
+  height: 1rem;
+  width: 100%;
+  margin: 0.5rem 0rem 1rem 0rem;
+}
+
+.label {
+  margin: 0.5rem 0rem;
+}
+
+.message-error {
+  color: red;
+}
+
+.message-success {
+  color: green;
+}

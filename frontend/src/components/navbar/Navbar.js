@@ -19,7 +19,8 @@ class Navbar extends React.Component {
     super(props)
     this.state = {
       currentItem: 'homeItem',
-      activeModal: ''
+      activeModal: '',
+      modalMessage: '',
     }
   }
 
@@ -43,6 +44,10 @@ class Navbar extends React.Component {
 
   loginModalConfirm = () => {
 
+    this.setState({
+      modalMessage: ''
+    })
+
     fetch('http://localhost:8000/login', {
       method: 'POST',
       headers: {
@@ -52,14 +57,25 @@ class Navbar extends React.Component {
         email: this.state.loginEmail,
         password: this.state.loginPassword
       })
-    }).then(res => {
-      console.log(res)
-    })
+    }).then(async res => {
+      let data = await res.json()
 
-    console.log(this.state.loginEmail, this.state.loginPassword)
-
-    this.setState({
-      activeModal: ''
+      if (res.ok) {
+        this.setState({
+          activeModal: '',
+          modalMessage: ''
+        })
+      } else if (data.message) {
+        this.setState({
+          modalMessage: data.message
+        }) 
+      } else {
+        this.setState({
+          modalMessage: 'Input is not valid'
+        }) 
+      }
+    }).catch(err => {
+      alert(err)
     })
   }
 
@@ -71,7 +87,8 @@ class Navbar extends React.Component {
 
   modalCancel = () => {
     this.setState({
-      activeModal: ''
+      activeModal: '',
+      modalMessage: ''
     })
   }
 
@@ -93,6 +110,7 @@ class Navbar extends React.Component {
               <label htmlFor="login-input-password">Password</label>
               <input id="login-input-password" name="loginPassword" type="password" onChange={this.inputOnChange}></input>
             </div>
+            <p className="message-error">{this.state.modalMessage}</p>
           </form>
         </Modal>}
         {this.state.activeModal === 'Sign Up' && <Modal title="Sign Up" 
