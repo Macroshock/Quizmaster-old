@@ -20,28 +20,13 @@
   margin: 2rem 0rem;
 }
 
+.modal-content form {
+  height: auto;
+}
+
 .modal-actions {
   display: flex;
   justify-content: space-evenly;
-}
-
-.modal-actions button {
-  color: white;
-  font-size: 1.25rem;
-  padding: 0.5rem 2rem;
-  margin: 0.5rem;
-  border: none;
-  border-radius: 5px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-  transition: box-shadow 0.22s, background-color 0.12s;
-}
-
-.modal-actions button:focus {
-  outline: 0;
-}
-
-.modal-actions button:hover {
-  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.5);
 }
 
 .modal-btn-cancel {

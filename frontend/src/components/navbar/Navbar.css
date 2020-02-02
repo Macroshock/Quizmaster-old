@@ -48,25 +48,14 @@
   cursor: pointer;
 }
 
-.form-login {
+form {
   height: 20vh;
   display: flex;
   align-items: center;
   flex-direction: column;
 }
 
-.form-login div {
+form div {
   width: 20rem;
   max-width: 60%;
-}
-
-.form-login input {
-  display: block;
-  height: 1rem;
-  width: 100%;
-  margin: 0.5rem 0rem 1rem 0rem;
-}
-
-.form-login label {
-  margin: 0.5rem 0rem;
 }

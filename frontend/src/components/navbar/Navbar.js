@@ -71,11 +71,13 @@ class Navbar extends React.Component {
         }) 
       } else {
         this.setState({
-          modalMessage: 'Input is not valid'
+          modalMessage: 'Input is not valid.'
         }) 
       }
     }).catch(err => {
-      alert(err)
+      this.setState({
+        modalMessage: 'Server is not responding.'
+      }) 
     })
   }
 
@@ -110,18 +112,25 @@ class Navbar extends React.Component {
               <label htmlFor="login-input-password">Password</label>
               <input id="login-input-password" name="loginPassword" type="password" onChange={this.inputOnChange}></input>
             </div>
-            <p className="message-error">{this.state.modalMessage}</p>
+            <p className="message error">{this.state.modalMessage}</p>
           </form>
         </Modal>}
         {this.state.activeModal === 'Sign Up' && <Modal title="Sign Up" 
           canConfirm canCancel onConfirm={this.signupModalConfirm} onCancel={this.modalCancel}>
           <form className="form-signup">
-          <label htmlFor="signup-input-name">Name</label>
-            <input id="signup-input-name" name="signupName" type="text" onChange={this.inputOnChange}></input>
-            <label htmlFor="signup-input-email">Email</label>
-            <input id="signup-input-email" name="signupEmail" type="email" onChange={this.inputOnChange}></input>
-            <label htmlFor="signup-input-password">Password</label>
-            <input id="signup-input-password" name="signupPassword" type="password" onChange={this.inputOnChange}></input>
+            <div>
+              <label htmlFor="signup-input-name">Name</label>
+              <input id="signup-input-name" name="signupName" type="text" onChange={this.inputOnChange}></input>
+            </div>
+            <div>
+              <label htmlFor="signup-input-email">Email</label>
+              <input id="signup-input-email" name="signupEmail" type="email" onChange={this.inputOnChange}></input>
+            </div>
+            <div>
+              <label htmlFor="signup-input-password">Password</label>
+              <input id="signup-input-password" name="signupPassword" type="password" onChange={this.inputOnChange}></input>
+            </div>
+            <p className="message error">{this.state.modalMessage}</p>
           </form>
         </Modal>}
 
