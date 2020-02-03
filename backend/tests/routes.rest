@@ -42,6 +42,30 @@ Content-Type: application/json
 
 ###
 
+# Register user with invalid email
+POST http://localhost:8000/signup/
+Content-Type: application/json
+
+{
+  "name": "julio",
+  "email": "julio@gmail.com",
+  "password": "555"
+}
+
+###
+
+# Register user successfully
+POST http://localhost:8000/signup/
+Content-Type: application/json
+
+{
+  "name": "julio",
+  "email": "julio5@gmail.com",
+  "password": "234"
+}
+
+###
+
 # Retrieve users
 GET http://localhost:8000/users/
 #Authorization: Bearer header.payload.signature
@@ -78,3 +102,4 @@ Content-Type: application/json
 
 # Delete user
 DELETE http://localhost:8000/users/5e24bc34b1cf7521c4e3afc6
+

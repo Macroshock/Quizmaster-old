@@ -21,6 +21,7 @@ class Navbar extends React.Component {
       currentItem: 'homeItem',
       activeModal: '',
       modalMessage: '',
+      modalMType: ''
     }
   }
 
@@ -45,7 +46,8 @@ class Navbar extends React.Component {
   loginModalConfirm = () => {
 
     this.setState({
-      modalMessage: ''
+      modalMessage: '',
+      modalMType: ''
     })
 
     fetch('http://localhost:8000/login', {
@@ -63,34 +65,86 @@ class Navbar extends React.Component {
       if (res.ok) {
         this.setState({
           activeModal: '',
-          modalMessage: ''
+          modalMessage: '',
+          modalMType: ''
         })
       } else if (data.message) {
         this.setState({
-          modalMessage: data.message
+          modalMessage: data.message,
+          modalMType: 'error'
         }) 
       } else {
         this.setState({
-          modalMessage: 'Input is not valid.'
+          modalMessage: 'Input is not valid.',
+          modalMType: 'error'
         }) 
       }
     }).catch(err => {
       this.setState({
-        modalMessage: 'Server is not responding.'
+        modalMessage: 'Server is not responding.',
+        modalMType: 'error'
       }) 
     })
+
   }
 
   signupModalConfirm = () => {
     this.setState({
-      activeModal: ''
+      modalMessage: '',
+      modalMType: ''
     })
+
+    if (!this.state.signupName || !this.state.signupEmail || !this.state.signupPassword) {
+      this.setState({
+        modalMessage: 'All fields are required!',
+        modalMType: 'error'
+      })
+      return
+    }
+
+    fetch('http://localhost:8000/signup', {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        name: this.state.signupName,
+        email: this.state.signupEmail,
+        password: this.state.signupPassword
+      })
+    }).then(async res => {
+      let data = await res.json()
+
+      if (res.ok) {
+        this.setState({
+          modalMessage: 'Registered successfully!',
+          modalMType: 'success'
+        })
+      } else if (data.message) {
+        this.setState({
+          modalMessage: data.message,
+          modalMType: 'error'
+        }) 
+      } else {
+        this.setState({
+          modalMessage: 'Input is not valid.',
+          modalMType: 'error'
+        }) 
+      }
+    }).catch(err => {
+      this.setState({
+        modalMessage: 'Server is not responding.',
+        modalMType: 'error'
+      }) 
+    })
+    
   }
 
   modalCancel = () => {
     this.setState({
       activeModal: '',
-      modalMessage: ''
+      modalMessage: '',
+      modalMType: ''
     })
   }
 
@@ -112,7 +166,7 @@ class Navbar extends React.Component {
               <label htmlFor="login-input-password">Password</label>
               <input id="login-input-password" name="loginPassword" type="password" onChange={this.inputOnChange}></input>
             </div>
-            <p className="message error">{this.state.modalMessage}</p>
+            <p className={`message ${this.state.modalMType}`}>{this.state.modalMessage}</p>
           </form>
         </Modal>}
         {this.state.activeModal === 'Sign Up' && <Modal title="Sign Up" 
@@ -130,7 +184,7 @@ class Navbar extends React.Component {
               <label htmlFor="signup-input-password">Password</label>
               <input id="signup-input-password" name="signupPassword" type="password" onChange={this.inputOnChange}></input>
             </div>
-            <p className="message error">{this.state.modalMessage}</p>
+            <p className={`message ${this.state.modalMType}`}>{this.state.modalMessage}</p>
           </form>
         </Modal>}
 

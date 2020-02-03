@@ -29,7 +29,7 @@ router.post('/', (req, res) => {
     }
 
     // Check if the user exists
-    if (docs.length == 0) {
+    if (docs.length === 0) {
       console.log(`User ${credentials.email} not found`)
       return res.status(404).json({ message: 'User not found' })
     }

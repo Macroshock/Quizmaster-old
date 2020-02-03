@@ -29,4 +29,7 @@ app.use('/users', usersRouter)
 const loginRouter = require('./routes/login.js')
 app.use('/login', loginRouter)
 
+const signupRouter = require('./routes/signup.js')
+app.use('/signup', signupRouter)
+
 app.listen(constants.SERVER_PORT, () => console.log(`Listening on port ${constants.SERVER_PORT}`))
