@@ -59,13 +59,13 @@ module.exports = {
     }
 
     // Find user in database
-    collection.findOne({ _id: new MongoDb.ObjectID(req.params.id) }, function(err, result) {
+    collection.findOne({ email: req.params.email }, function(err, result) {
       if (err) {
         return res.status(500).json({ message: err })
       }
 
       if (result === null) {
-        return res.status(404).json({ message: 'User not found' })
+        return res.status(404).json({ message: `User ${req.params.email} not found` })
       }
 
       next()

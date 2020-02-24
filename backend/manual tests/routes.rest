@@ -73,7 +73,7 @@ GET http://localhost:8000/users/
 ###
 
 # Get a single user
-GET http://localhost:8000/users/5e1e97d15758b61ce475d603
+GET http://localhost:8000/users/julio@gmail.com
 
 ###
 
@@ -82,16 +82,16 @@ POST http://localhost:8000/users/
 Content-Type: application/json
 
 {
-  "name": "Julio4",
-  "email": "julio4@gmail.com",
-  "password": "2343",
+  "name": "Jefferson",
+  "email": "jefferson@gmail.com",
+  "password": "12345",
   "role": "user"
 }
 
 ###
 
 # Update user
-PATCH http://localhost:8000/users/5e24bc34b1cf7521c4e3afc6
+PATCH http://localhost:8000/users/jefferson@gmail.com
 Content-Type: application/json
 
 {
@@ -101,5 +101,8 @@ Content-Type: application/json
 ###
 
 # Delete user
-DELETE http://localhost:8000/users/5e24bc34b1cf7521c4e3afc6
+DELETE http://localhost:8000/users/jefferson@gmail.com
 
+###
+
+GET http://localhost:8000/users/juan@gmail.com

@@ -11,7 +11,8 @@ router.post('/', mw.validateToken, mw.validateAdmin, (req, res) => {
   let user = {
     name: req.body.name,
     email: req.body.email,
-    password: req.body.password
+    password: req.body.password,
+    role: req.body.role
   }
 
   console.log('Creating user')
@@ -34,7 +35,7 @@ router.post('/', mw.validateToken, mw.validateAdmin, (req, res) => {
 })
 
 // Get user
-router.get('/:id', (req, res) => {
+router.get('/:email', (req, res) => {
 
   console.log('Getting user')
   const collection = dbhandler.getCollection('Users')
@@ -44,13 +45,18 @@ router.get('/:id', (req, res) => {
   }
 
   // Find user in database
-  collection.findOne({ _id: new MongoDb.ObjectID(req.params.id) }, function(err, result) {
+  collection.findOne({ email: req.params.email }, function(err, result) {
     if (err) {
-      return res.sendStatus(500).json({ message: err })
+      return res.status(500).json({ message: err })
+    }
+
+    if(!result) {
+      console.log(`User ${req.params.email} not found`)
+      return res.status(404).json({ message: 'User not found' })
     }
 
     res.status(200).json(result)
-    console.log(`User ${req.params.id} found`)
+    console.log(`User ${req.params.email} found`)
   })
   
 })
@@ -62,13 +68,13 @@ router.get('/', mw.validateToken, mw.validateAdmin, (req, res) => {
   const collection = dbhandler.getCollection('Users')
 
   if (!collection) {
-    return res.sendStatus(500).json({ message: 'Can not get users; database server is not accesible' })
+    return res.status(500).json({ message: 'Can not get users; database server is not accesible' })
   }
 
   // Find users in database
   collection.find({}).toArray(function(err, docs) {
     if (err) {
-      return res.sendStatus(500).json({ message: err })
+      return res.status(500).json({ message: err })
     }
 
     res.status(200).json(docs)
@@ -76,9 +82,8 @@ router.get('/', mw.validateToken, mw.validateAdmin, (req, res) => {
   })
 })
 
-
 // Update user
-router.patch('/:id', mw.validateToken, mw.validateAdmin, mw.checkUser, (req, res) => {
+router.patch('/:email', mw.validateToken, mw.validateAdmin, mw.checkUser, (req, res) => {
   
   let updatedUser = { $set: { } }
 
@@ -102,39 +107,39 @@ router.patch('/:id', mw.validateToken, mw.validateAdmin, mw.checkUser, (req, res
   const collection = dbhandler.getCollection('Users')
 
   if (!collection) {
-    return res.sendStatus(500).json({ message: 'Can not update user; database server is not accesible' })
+    return res.status(500).json({ message: 'Can not update user; database server is not accesible' })
   }
 
-  // Delete user in database
-  collection.updateOne({ _id: new MongoDb.ObjectID(req.params.id) }, updatedUser, 
+  // Update user in database
+  collection.updateOne({ email: req.params.email }, updatedUser, 
                         function(err, result) {
     if (err) {
-      return res.sendStatus(500).json({ message: err })
+      return res.status(500).json({ message: err })
     }
 
     res.sendStatus(200)
-    console.log('User updated')
+    console.log(`User ${req.params.email} updated`)
   })
 })
 
 // Delete user
-router.delete('/:id', mw.validateToken, mw.validateAdmin, mw.checkUser, (req, res) => {
+router.delete('/:email', mw.validateToken, mw.validateAdmin, mw.checkUser, (req, res) => {
 
   console.log('Deleting user')
   const collection = dbhandler.getCollection('Users')
 
   if (!collection) {
-    return res.sendStatus(500).json({ message: 'Can not update user; database server is not accesible' })
+    return res.status(500).json({ message: 'Can not update user; database server is not accesible' })
   }
 
   // Delete user in database
-  collection.deleteOne({ _id: new MongoDb.ObjectID(req.params.id) }, function(err, result) {
+  collection.deleteOne({ email: req.params.email }, function(err, result) {
     if (err) {
-      return res.sendStatus(500).json({ message: err })
+      return res.status(500).json({ message: err })
     }
 
     res.sendStatus(204)
-    console.log('User deleted')
+    console.log(`User ${req.params.email} deleted`)
   })
 
 })
