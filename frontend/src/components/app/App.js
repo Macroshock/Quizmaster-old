@@ -9,25 +9,20 @@ import About from '../pages/about/About.js'
 
 import './App.css'
 
-class App extends React.Component {
+function App () {
 
-  constructor(props) {
-    super(props)
-  }
+  return (
+    <Router>
+      <Navbar/>
 
-  render() {
-    return (
-      <Router>
-        <Navbar/>
+      <Route exact path="/">
+        <Redirect to="/home" />
+      </Route> 
+      <Route path="/home" component={Home}/>
+      <Route path="/about" component={About}/>
+    </Router>
+  )
 
-        <Route exact path="/">
-          <Redirect to="/home" />
-        </Route> 
-        <Route path="/home" component={Home}/>
-        <Route path="/about" component={About}/>
-      </Router>
-    )
-  }
 }
 
 export default App
