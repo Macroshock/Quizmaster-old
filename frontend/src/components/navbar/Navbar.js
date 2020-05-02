@@ -1,221 +1,63 @@
-import React from 'react'
-import PropTypes from "prop-types"
+import React, { useState, useCallback, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { withRouter } from "react-router"
-import Modal from '../global/Modal.js'
-import Backdrop from '../global/Backdrop.js'
+import LogInModal from './LogInModal.js'
+import SignUpModal from './SignUpModal.js'
 
 import './Navbar.css'
 
-class Navbar extends React.Component {
+function Navbar(props) {
 
-  static propTypes = {
-    match: PropTypes.object.isRequired,
-    location: PropTypes.object.isRequired,
-    history: PropTypes.object.isRequired
-  }
+  const [navbarItem, setNavbarItem] = useState('homeItem')
+  const [logInModalActive, setLogInModalActive] = useState(false)
+  const [signUpModalActive, setSignUpModalActive] = useState(false)
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      currentItem: 'homeItem',
-      activeModal: '',
-      modalMessage: '',
-      modalMType: ''
-    }
-  }
+  useEffect(() => {
+    const currLocation = props.location
+    let currPath = currLocation.pathname.slice(1, currLocation.pathname.length)
 
-  componentDidUpdate(prevProps) {
-    const currLocation = this.props.location
+    setNavbarItem(currPath + 'Item')
+  }, [props.location])
 
-    if (currLocation !== prevProps.location) {
-      let currPath = currLocation.pathname.slice(1, currLocation.pathname.length)
+  const logInModalCancel = useCallback(() => {
+    setLogInModalActive(false)
+  })
 
-      this.setState(state => ({
-        currentItem: currPath + 'Item'
-      }))
-    }
-  }
+  const signUpModalCancel = useCallback(() => {
+    setSignUpModalActive(false)
+  })
 
-  openModal = (modal) => {
-    this.setState({
-      activeModal: modal
-    })
-  }
+  return (
+    <React.Fragment>
+      <LogInModal isActive={logInModalActive} onCancel={logInModalCancel}/>
+      <SignUpModal isActive={signUpModalActive} onCancel={signUpModalCancel}/>
 
-  loginModalConfirm = () => {
+      <div className="navbar">
+        <div className='navbar-flex-container'>
+          <div className="navbar-logo">
+            QuizMaster
+          </div>
+          <Link className={navbarItem === "homeItem" ? "navbar-item active" : "navbar-item"} 
+            to="/home" id="homeItem" >
+              Home
+          </Link>
 
-    this.setState({
-      modalMessage: '',
-      modalMType: ''
-    })
+          <Link className={navbarItem === "aboutItem" ? "navbar-item active" : "navbar-item"}
+            to="/about" id="aboutItem">
+              About
+          </Link>
 
-    fetch('http://localhost:8000/login', {
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/json',
-      },
-      body: JSON.stringify({
-        email: this.state.loginEmail,
-        password: this.state.loginPassword
-      })
-    }).then(async res => {
-      let data = await res.json()
+          <div className="navbar-item" onClick={() => setLogInModalActive(true)}>
+            Log In
+          </div>
 
-      if (res.ok) {
-        this.setState({
-          activeModal: '',
-          modalMessage: '',
-          modalMType: ''
-        })
-      } else if (data.message) {
-        this.setState({
-          modalMessage: data.message,
-          modalMType: 'error'
-        }) 
-      } else {
-        this.setState({
-          modalMessage: 'Input is not valid.',
-          modalMType: 'error'
-        }) 
-      }
-    }).catch(err => {
-      this.setState({
-        modalMessage: 'Server is not responding.',
-        modalMType: 'error'
-      }) 
-    })
-
-  }
-
-  signupModalConfirm = () => {
-    this.setState({
-      modalMessage: '',
-      modalMType: ''
-    })
-
-    if (!this.state.signupName || !this.state.signupEmail || !this.state.signupPassword) {
-      this.setState({
-        modalMessage: 'All fields are required!',
-        modalMType: 'error'
-      })
-      return
-    }
-
-    fetch('http://localhost:8000/signup', {
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/json',
-      },
-      body: JSON.stringify({
-        name: this.state.signupName,
-        email: this.state.signupEmail,
-        password: this.state.signupPassword
-      })
-    }).then(async res => {
-      let data = await res.json()
-
-      if (res.ok) {
-        this.setState({
-          modalMessage: 'Registered successfully!',
-          modalMType: 'success'
-        })
-      } else if (data.message) {
-        this.setState({
-          modalMessage: data.message,
-          modalMType: 'error'
-        }) 
-      } else {
-        this.setState({
-          modalMessage: 'Input is not valid.',
-          modalMType: 'error'
-        }) 
-      }
-    }).catch(err => {
-      this.setState({
-        modalMessage: 'Server is not responding.',
-        modalMType: 'error'
-      }) 
-    })
-    
-  }
-
-  modalCancel = () => {
-    this.setState({
-      activeModal: '',
-      modalMessage: '',
-      modalMType: ''
-    })
-  }
-
-  inputOnChange = e => this.setState({ [e.target.name]: e.target.value })
-
-  render() {
-    return (
-      <React.Fragment>
-
-        {(this.state.activeModal === 'Log In' || this.state.activeModal === 'Sign Up') && <Backdrop/>}
-        {this.state.activeModal === 'Log In' && <Modal title="Log In" 
-          canConfirm canCancel onConfirm={this.loginModalConfirm} onCancel={this.modalCancel}>
-          <form className="form-login">
-            <div>
-              <label htmlFor="login-input-email">Email</label>
-              <input id="login-input-email" name="loginEmail" type="email" onChange={this.inputOnChange}></input>
-            </div>
-            <div>
-              <label htmlFor="login-input-password">Password</label>
-              <input id="login-input-password" name="loginPassword" type="password" onChange={this.inputOnChange}></input>
-            </div>
-            <p className={`message ${this.state.modalMType}`}>{this.state.modalMessage}</p>
-          </form>
-        </Modal>}
-        {this.state.activeModal === 'Sign Up' && <Modal title="Sign Up" 
-          canConfirm canCancel onConfirm={this.signupModalConfirm} onCancel={this.modalCancel}>
-          <form className="form-signup">
-            <div>
-              <label htmlFor="signup-input-name">Name</label>
-              <input id="signup-input-name" name="signupName" type="text" onChange={this.inputOnChange}></input>
-            </div>
-            <div>
-              <label htmlFor="signup-input-email">Email</label>
-              <input id="signup-input-email" name="signupEmail" type="email" onChange={this.inputOnChange}></input>
-            </div>
-            <div>
-              <label htmlFor="signup-input-password">Password</label>
-              <input id="signup-input-password" name="signupPassword" type="password" onChange={this.inputOnChange}></input>
-            </div>
-            <p className={`message ${this.state.modalMType}`}>{this.state.modalMessage}</p>
-          </form>
-        </Modal>}
-
-        <div className="navbar">
-          <div className='navbar-flex-container'>
-            <div className="navbar-logo">
-              QuizMaster
-            </div>
-            <Link className={this.state.currentItem === "homeItem" ? "navbar-item active" : "navbar-item"} 
-              to="/" id="homeItem" >
-                Home
-            </Link>
-
-            <Link className={this.state.currentItem === "aboutItem" ? "navbar-item active" : "navbar-item"}
-              to="/about" id="aboutItem">
-                About
-            </Link>
-
-            <div className="navbar-item" onClick={() => this.openModal('Log In')}>
-              Log In
-            </div>
-
-            <div className="navbar-item" onClick={() => this.openModal('Sign Up')}>
-              Sign Up
-            </div>
+          <div className="navbar-item" onClick={() => setSignUpModalActive(true)}>
+            Sign Up
           </div>
         </div>
-
-      </React.Fragment>
-    )
-  }
+      </div>
+    </React.Fragment>
+  )
 }
 
 export default withRouter(Navbar)

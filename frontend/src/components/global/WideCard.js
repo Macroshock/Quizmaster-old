@@ -3,6 +3,7 @@ import './WideCard.css'
 import '../../resources/fontawesome/all.js'
 
 function WideCard(props) {
+
   const imgStyle = {
     backgroundImage: `url(${props.image})`
   };
@@ -42,6 +43,7 @@ function WideCard(props) {
   } else {
     return null;
   }
+  
 }
 
 export default WideCard

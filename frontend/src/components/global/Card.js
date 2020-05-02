@@ -3,6 +3,7 @@ import './Card.css'
 import '../../resources/fontawesome/all.js'
 
 function Card(props) {
+
   return (
     <div className="card">
       {props.icon &&
@@ -15,6 +16,7 @@ function Card(props) {
       </div>
     </div>
   )
+  
 }
 
 export default Card
